@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+
+<html lang="en">
+	
+	<head>
+		<meta charset="UTF-8">
+		<title>Exquisite Pixel</title>
+
+		<link href="styles/main.css" rel="stylesheet" media="all">
+		<script src="src/expix.js"></script>
+	</head>
+
+	<body style="height: 100%; width: 100%;">
+
+		<div id="wrapper">
+
+			<canvas id="canvas" width="640" height="480"></canvas>
+			<canvas id="grid" width="640" height="480"></canvas>
+
+		</div>
+
+		<script>
+			var cellSize = 10;
+			var numCellsX = 100;
+			var numCellsY = 100;
+			var colors = null;
+			var lastCell = null;
+			var mouseDown = false;
+
+			init();
+
+			function offsetX(x) {
+				var rect = canvas.getBoundingClientRect();
+
+    			return x.pageX - parseInt(rect.left);
+			};
+
+			function offsetY(y) {
+				var rect = canvas.getBoundingClientRect();
+
+    			return y.pageY - parseInt(rect.top);
+			};
+
+			function posToGrid(x, y) {
+				var a = Math.floor(x / cellSize);
+    			var b = Math.floor(y / cellSize);
+    			
+    			return {
+        			x: a,
+        			y: b
+    			}
+			};
+
+			function init() {
+				canvas = document.getElementById('canvas');
+				context = canvas.getContext('2d');
+
+				canvasGrid = document.getElementById('grid');
+				contextGrid = canvasGrid.getContext('2d');
+
+				width = canvas.width;
+				height = canvas.height;
+
+				context.strokeStyle = 'black';
+
+				drawColors();
+				//drawGrid();
+
+				canvas.addEventListener('mousemove', function(e) {
+					var mousePos = getMousePos;
+					
+					if (mouseDown) {
+						var currentCell = posToGrid(offsetX(e), offsetY(e));
+		            	drawPixel(currentCell.x, currentCell.y);
+					}
+				});
+
+				canvas.addEventListener('mousedown', function(e) {
+			        mouseDown = true;
+			        var currentCell = posToGrid(offsetX(e), offsetY(e));
+		            drawPixel(currentCell.x, currentCell.y);
+			    });
+
+			    canvas.addEventListener('mouseup', function(e) {
+			    	mouseDown = false;
+			    });
+			};
+
+			function getMousePos(canvas, e) {
+				var rect = canvas.getBoundingClientRect();
+
+        		return {
+          			x: evt.clientX - rect.left,
+          			y: evt.clientY - rect.top
+        		};
+			};
+
+			function drawColors() {
+				colors = new Array(numCellsY);
+				
+				for (var i = 0; i < numCellsY; i++) {
+    				colors[i] = new Array(numCellsX);
+				}
+			}
+
+			function drawGrid() {
+				for (var x = 0; x <= width; x += 20) {
+					context.moveTo(0.5 + x + 10, 10);
+					context.lineTo(0.5 + x + 10, height + 10);
+				}
+
+				for (var y = 0; y <= height; y += 20) {
+					context.moveTo(10, 0.5 + y + 10);
+					context.lineTo(width + 10, 0.5 + y + 10);
+				}
+
+				context.stroke();
+			};
+
+			function drawPixel(x, y, color) {
+				context.fillRect(x * cellSize, y * cellSize, cellSize + 1, cellSize + 1);
+				colors[x][y] = 1;
+			};
+
+			// http://en.wikipedia.org/wiki/Flood_fill
+			function floodFill(x, y, startColor, targetColor) {
+				// If the node is already the target color, do nothing.
+				if (colors[x][y] != startColor) {
+        			return;
+    			}
+			};
+		</script>
+	
+	</body>
+
+</html>
