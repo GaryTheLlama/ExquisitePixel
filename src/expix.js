@@ -11,9 +11,6 @@ this.canvasInit = function() {
 	canvas = document.getElementById('canvas');
 	context = canvas.getContext('2d');
 
-	//canvasGrid = document.getElementById('grid');
-	//contextGrid = canvasGrid.getContext('2d');
-
 	width = canvas.width;
 	height = canvas.height;
 

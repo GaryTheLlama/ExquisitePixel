@@ -8,18 +8,25 @@
 
 		<link href="styles/main.css" rel="stylesheet" media="all">
 		<script src="src/expix.js"></script>
+
+		<!--[if lt IE 9]>
+        	<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
 	</head>
 
-	<body style="height: 100%; width: 100%;">
+	<body>
 
-		<div id="wrapper">
+		<div>
 
 			<canvas id="canvas" width="640" height="480"></canvas>
-			<canvas id="grid" width="640" height="480"></canvas>
 
 		</div>
 
+		<div id="pointers">
+		</div>
+
 		<script>
+
 			var cellSize = 10;
 			var numCellsX = 100;
 			var numCellsY = 100;
@@ -54,9 +61,6 @@
 			function init() {
 				canvas = document.getElementById('canvas');
 				context = canvas.getContext('2d');
-
-				canvasGrid = document.getElementById('grid');
-				contextGrid = canvasGrid.getContext('2d');
 
 				width = canvas.width;
 				height = canvas.height;
@@ -129,6 +133,7 @@
         			return;
     			}
 			};
+
 		</script>
 	
 	</body>
